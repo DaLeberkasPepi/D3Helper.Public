@@ -57,7 +57,7 @@ namespace D3Helper.A_Handler.AutoGamble
                     {
                         A_Tools.InputSimulator.IS_Mouse.RightCLick(((int)shopItemRect.Left + ((int)shopItemRect.Width * 10 / 100)), ((int)shopItemRect.Top + ((int)shopItemRect.Height * 10 / 100)), ((int)shopItemRect.Right - ((int)shopItemRect.Width * 10 / 100)), ((int)shopItemRect.Bottom - ((int)shopItemRect.Height * 10 / 100)));
 
-                        System.Threading.Thread.Sleep(100);
+                        System.Threading.Thread.Sleep(30);
                     }
                 
 

@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using D3Helper.A_Collector;
 using Enigma.D3;
 using Enigma.D3.Enums;
+using Enigma.D3.UI.Controls;
 using Enigma.D3.Helpers;
 
 namespace D3Helper.A_Handler.AutoPick
@@ -34,11 +33,8 @@ namespace D3Helper.A_Handler.AutoPick
 
                     foreach (var pick in ItemsToPick)
                     {
-                        int safetycounter = 0;
 
-                        var local = ActorCommonData.Local;
-
-                        while (IsStillOnGround(pick.x08C_ActorId) && safetycounter < 10)
+                        while (IsStillOnGround(pick.x08C_ActorId) && !tryCheckInventoryFull())
                         {
                             float RX, RY;
 
@@ -48,27 +44,11 @@ namespace D3Helper.A_Handler.AutoPick
                             A_Tools.InputSimulator.IS_Mouse.MoveCursor((uint) RX, (uint) RY);
                             A_Tools.InputSimulator.IS_Mouse.LeftClick((uint) RX, (uint) RY);
 
-                            Thread.Sleep(50);
-
-                            var _local = ActorCommonData.Local;
-
-                            DateTime _start = DateTime.Now;
-
-                            while (_local.x0D0_WorldPosX != local.x0D0_WorldPosX ||
-                                   _local.x0D4_WorldPosY != local.x0D4_WorldPosY)
-                            {
-                                if (_start.AddSeconds(5) < DateTime.Now)
-                                    break;
-
-                                Thread.Sleep(10);
-                            }
-
-                            safetycounter++;
+                            Thread.Sleep(30);
 
                         }
                     }
 
-                    // Restore Cursor Pos to previous Pos
                     Cursor.Position = getCursorPos;
 
                 }
@@ -80,6 +60,31 @@ namespace D3Helper.A_Handler.AutoPick
                 
                 IsPicking = false;
             }
+        }
+
+        private static bool tryCheckInventoryFull()
+        {
+            try
+            {
+                var inventoryItems = ActorCommonDataHelper.EnumerateInventoryItems();
+
+                if (inventoryItems.Count() <= 20)
+                    return false;
+
+                string error_notification_uielement = "Root.TopLayer.error_notify.error_text";
+                string item_canot_be_picked = "You have no place to put that item.";
+
+                var errortext = UXHelper.GetControl<UXLabel>(error_notification_uielement);
+
+                if (errortext.xA20_Text_StructStart_Min84Bytes == item_canot_be_picked && errortext.IsVisible())
+                {
+                    return true;
+                }
+
+                return false;
+
+            }
+            catch { return true; }
         }
 
         private static List<ActorCommonData> get_AllPickableItems()

@@ -149,7 +149,7 @@
 - IF CHECKED it Is TRUE if you are MOVING IF UNCHECKED it Is TRUE if you are NOT MOVING
 
 *Player_IsNotBuffCount
-- Is TRUE if a given BUFF (POWERSNO) with a given ATTRIBUTEID (ATTRIBID) has less than or equal AMOUNT (VALUE) of STACKS
+- Is TRUE if a given BUFF (POWERSNO) with a given ATTRIBUTEID (ATTRIBID) has less than AMOUNT (VALUE) of STACKS
 
 *Player_IsMonsterSelected
 - IF CHECKED it Is TRUE if a monster is SELECTED IF UNCHECKED it Is TRUE if NO monster is selected
